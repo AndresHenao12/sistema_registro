@@ -75,6 +75,15 @@ class SQLiteRepository:
             return cursor.fetchone()
 
     # --- ESTUDIANTES ---
+    def obtener_estudiante(self, id_estudiante: str):
+        with self.db_conn._conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, nombre, correo FROM estudiantes WHERE id = ?", (id_estudiante,))
+            fila = cursor.fetchone()
+        if fila is None:
+            return None
+        return Estudiante(*fila)
+
     def guardar_estudiante(self, estudiante: Estudiante):
         with self.db_conn._conectar() as conn:
             conn.execute("INSERT OR REPLACE INTO estudiantes (id, nombre, correo) VALUES (?, ?, ?)",
@@ -87,6 +96,15 @@ class SQLiteRepository:
             conn.commit()
 
     # --- CURSOS ---
+    def obtener_curso(self, id_curso: str):
+        with self.db_conn._conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, nombre, cupos FROM cursos WHERE id = ?", (id_curso,))
+            fila = cursor.fetchone()
+        if fila is None:
+            return None
+        return Curso(*fila)
+
     def guardar_curso(self, curso: Curso):
         with self.db_conn._conectar() as conn:
             conn.execute("INSERT OR REPLACE INTO cursos (id, nombre, cupos) VALUES (?, ?, ?)",
@@ -99,6 +117,16 @@ class SQLiteRepository:
             conn.commit()
 
     # --- INSCRIPCIONES ---
+    def obtener_inscripciones_por_estudiante(self, id_estudiante: str):
+        with self.db_conn._conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                "SELECT id, id_estudiante, id_curso FROM inscripciones WHERE id_estudiante = ?",
+                (id_estudiante,),
+            )
+            filas = cursor.fetchall()
+        return [Inscripcion(*fila) for fila in filas]
+
     def guardar_inscripcion(self, inscripcion: Inscripcion):
         with self.db_conn._conectar() as conn:
             conn.execute("INSERT OR IGNORE INTO inscripciones (id, id_estudiante, id_curso) VALUES (?, ?, ?)",

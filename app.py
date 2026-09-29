@@ -71,14 +71,17 @@ def registrar_estudiante():
     if 'user_id' not in session: return redirect(url_for('login'))
     try:
         registrar_est_uc.ejecutar(request.form['id'], request.form['nombre'], request.form['correo'])
+        flash('Estudiante registrado correctamente.', 'success')
     except Exception as e:
         print(f"Error: {e}")
+        flash(f'Error al registrar estudiante: {e}', 'danger')
     return redirect(url_for('estudiantes'))
 
 @app.route('/eliminar_estudiante/<id>')
 def eliminar_estudiante(id):
     if 'user_id' not in session: return redirect(url_for('login'))
     repo.eliminar_estudiante(id)
+    flash('Estudiante eliminado.', 'info')
     return redirect(url_for('estudiantes'))
 
 @app.route('/cursos')
@@ -95,14 +98,17 @@ def crear_curso():
     if 'user_id' not in session: return redirect(url_for('login'))
     try:
         crear_curso_uc.ejecutar(request.form['id_curso'], request.form['nombre_curso'], int(request.form['cupos']))
+        flash('Curso creado correctamente.', 'success')
     except Exception as e:
         print(f"Error: {e}")
+        flash(f'Error al crear curso: {e}', 'danger')
     return redirect(url_for('cursos'))
 
 @app.route('/eliminar_curso/<id>')
 def eliminar_curso(id):
     if 'user_id' not in session: return redirect(url_for('login'))
     repo.eliminar_curso(id)
+    flash('Curso eliminado.', 'info')
     return redirect(url_for('cursos'))
 
 @app.route('/inscripciones')
@@ -128,14 +134,17 @@ def inscribir():
     if 'user_id' not in session: return redirect(url_for('login'))
     try:
         inscribir_uc.ejecutar(request.form['id_inscripcion'], request.form['id_estudiante'], request.form['id_curso'])
+        flash('Inscripción realizada correctamente.', 'success')
     except Exception as e:
         print(f"Error: {e}")
+        flash(f'Error al inscribir: {e}', 'danger')
     return redirect(url_for('inscripciones'))
 
 @app.route('/eliminar_inscripcion/<id>')
 def eliminar_inscripcion(id):
     if 'user_id' not in session: return redirect(url_for('login'))
     repo.eliminar_inscripcion(id)
+    flash('Inscripción eliminada.', 'info')
     return redirect(url_for('inscripciones'))
 
 if __name__ == '__main__':
