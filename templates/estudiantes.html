@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h2 class="fw-bold text-white">Gestión de Estudiantes</h2>
+        <p class="text-muted">Administra los registros y datos de los estudiantes del sistema académico.</p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Formulario de Registro -->
+    <div class="col-lg-4">
+        <div class="card-dark p-4">
+            <h5 class="fw-bold text-white mb-3">Registrar Estudiante</h5>
+            <form action="/registrar_estudiante" method="POST">
+                <div class="mb-3">
+                    <label class="form-label text-muted small">Documento / ID</label>
+                    <input type="text" name="id" class="form-control" placeholder="Ej. 10203040" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted small">Nombre completo</label>
+                    <input type="text" name="nombre" class="form-control" placeholder="Ej. Andrés Henao" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-muted small">Correo electrónico</label>
+                    <input type="email" name="correo" class="form-control" placeholder="correo@uniremington.edu.co" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">Guardar Estudiante</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabla de Listado -->
+    <div class="col-lg-8">
+        <div class="card-dark p-4">
+            <h5 class="fw-bold text-white mb-3">Estudiantes Registrados</h5>
+            <div class="table-responsive">
+                <table class="table table-dark-custom align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for est in estudiantes %}
+                        <tr>
+                            <td>{{ est[0] }}</td>
+                            <td class="fw-semibold text-white">{{ est[1] }}</td>
+                            <!-- CORREO CAMBIADO A TEXTO BLANCO -->
+                            <td class="text-white">{{ est[2] }}</td>
+                            <td class="text-end">
+                                <a href="/eliminar_estudiante/{{ est[0] }}" class="btn btn-outline-danger btn-sm px-2 py-1" style="font-size: 11px;">Eliminar</a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">No hay estudiantes registrados todavía.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uniremington Académico - Sistema Académico</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark-main: #0b0f19;
+            --bg-card: #111827;
+            --border-card: #1f2937;
+            --accent-blue: #2563eb;
+            --text-main: #f3f4f6;
+            --text-muted: #e5e7eb;
+        }
+
+        body {
+            background-color: var(--bg-dark-main);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Barra de Navegación Superior */
+        .navbar-custom {
+            background-color: rgba(17, 24, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-card);
+            padding: 12px 0;
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            padding: 8px 16px !important;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #fff !important;
+            background-color: rgba(37, 99, 235, 0.15);
+        }
+
+        /* Botón hamburguesa personalizado para móviles */
+        .navbar-toggler {
+            border-color: var(--border-card) !important;
+            background-color: rgba(31, 41, 55, 0.5);
+        }
+
+        .navbar-toggler:focus {
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25);
+        }
+
+        /* Tarjetas Principales Dark */
+        .card-dark {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-card);
+            border-radius: 16px;
+            color: var(--text-main);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease;
+        }
+
+        .card-dark:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Tablas Oscuras Personalizadas */
+        .table-dark-custom {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .table-dark-custom th {
+            background-color: #1f2937;
+            color: #e5e7eb;
+            border-bottom: 1px solid #374151;
+            font-weight: 600;
+        }
+
+        .table-dark-custom td {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border-bottom: 1px solid #1f2937;
+            vertical-align: middle;
+        }
+
+        /* FORZAR TEXTO CLARO EN DESCRIPCIONES Y TEXT-MUTED */
+        .text-muted {
+            color: #e5e7eb !important;
+            opacity: 0.9;
+        }
+
+        /* FORZAR TEXTO BLANCO EN ETIQUETAS Y FORMULARIOS */
+        .form-label {
+            color: #ffffff !important;
+            font-weight: 500;
+        }
+
+        .form-control, .form-select {
+            background-color: #0b0f19 !important;
+            border: 1px solid #374151 !important;
+            color: #ffffff !important;
+            border-radius: 8px;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #0b0f19 !important;
+            border-color: var(--accent-blue) !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.25) !important;
+        }
+
+        /* Placeholders */
+        ::placeholder {
+            color: #9ca3af !important;
+            opacity: 1;
+        }
+
+        /* Botones */
+        .btn-primary {
+            background-color: var(--accent-blue);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--border-card);
+            background-color: var(--bg-dark-main);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Animación de entrada */
+        .fade-in {
+            animation: fadeInAnimation 0.4s ease-in-out forwards;
+        }
+        @keyframes fadeInAnimation {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div>
+        {% if session.get('user_id') %}
+        <!-- BARRA DE NAVEGACIÓN SUPERIOR RESPONSIVA -->
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                    <div class="bg-primary rounded-circle d-flex align-items-center justify-content-center text-white fw-bold" style="width: 32px; height: 32px; font-size: 14px;">U</div>
+                    <div>
+                        <span style="font-size: 15px;">Uniremington Académico</span>
+                        <div class="text-muted" style="font-size: 10px; font-weight: 400;">Clean Architecture v1.0</div>
+                    </div>
+                </a>
+                
+                <!-- Botón hamburguesa para dispositivos móviles -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Elementos del menú colapsables en móviles -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav mx-auto align-items-lg-center gap-1 my-2 my-lg-0">
+                        <a class="nav-link" href="/">Dashboard</a>
+                        <a class="nav-link" href="/estudiantes">Estudiantes</a>
+                        <a class="nav-link" href="/cursos">Cursos</a>
+                        <a class="nav-link" href="/inscripciones">Inscripciones</a>
+                    </div>
+
+                    <div class="d-flex flex-column flex-lg-row align-items-lg-center gap-3 mt-3 mt-lg-0 pt-3 pt-lg-0 border-top border-secondary border-opacity-25 border-top-lg-0">
+                        <span class="text-muted small">Hola, <strong class="text-white">{{ session.get('user_name') }}</strong></span>
+                        <a class="btn btn-outline-light btn-sm px-3 text-center" href="/logout" style="border-color: #374151; font-size: 12px;">Cerrar Sesión</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        {% endif %}
+
+        <div class="container py-4 py-md-5 fade-in">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="py-4 mt-auto">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 text-center text-md-start">
+            <div>© 2026 Uniremington Académico. Todos los derechos reservados.</div>
+            <div class="d-flex gap-3 text-muted justify-content-center">
+                <span>GitHub</span>
+                <span>Facebook</span>
+                <span>Discord</span>
+                <span>WhatsApp</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Script de Bootstrap indispensable para que funcione el menú desplegable en celulares -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

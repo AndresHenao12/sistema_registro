@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- BANNER PRINCIPAL DE CONTROL ACADÉMICO -->
+<div class="card-dark p-5 mb-5 position-relative overflow-hidden">
+    <div class="row align-items-center">
+        <div class="col-lg-7">
+            <span class="badge bg-primary bg-opacity-25 text-primary mb-3 px-3 py-2 rounded-pill" style="font-size: 11px; letter-spacing: 1px;">PANEL DE CONTROL ACADÉMICO</span>
+            <h1 class="display-6 fw-bold mb-3 text-white">Sistema de Gestión Universitaria</h1>
+            <p class="text-muted mb-4" style="font-size: 15px; line-height: 1.6;">
+                Plataforma institucional desarrollada con Clean Architecture para administrar registros de estudiantes, oferta de cursos y control de inscripciones académicas con seguridad de usuarios.
+            </p>
+            <div class="d-flex gap-3">
+                <a href="/estudiantes" class="btn btn-primary px-4 py-2">GESTIONAR ESTUDIANTES</a>
+                <a href="/cursos" class="btn btn-outline-light px-4 py-2" style="border-color: #374151; font-weight: 600;">VER CURSOS</a>
+            </div>
+        </div>
+        <div class="col-lg-5 text-center mt-4 mt-lg-0">
+            <!-- Consola de Estado del Sistema -->
+            <div class="p-2 rounded-3" style="background: #0b0f19; border: 1px solid #1f2937;">
+                <div class="d-flex justify-content-between align-items-center mb-2 px-2 pt-1">
+                    <span class="badge bg-success bg-opacity-25 text-success" style="font-size: 9px;">ESTADO: ACTIVO</span>
+                    <span class="text-muted" style="font-size: 10px;">UNIREMINGTON SYSTEM</span>
+                </div>
+                <div class="bg-dark rounded p-3 text-start" style="font-family: monospace; font-size: 12px; color: #60a5fa;">
+                    > database: SQLite [Conectado]<br>
+                    > architecture: Clean Architecture<br>
+                    > server: Running on port 5000<br>
+                    <span class="text-success">> security: Active Sessions [OK]</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TARJETAS DE MÉTRICAS ACADÉMICAS -->
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card-dark p-4 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-muted d-block mb-1" style="font-size: 11px; letter-spacing: 0.5px; font-weight: 600;">ESTUDIANTES MATRICULADOS</span>
+                <h2 class="fw-bold text-white mb-0">Gestión Activa</h2>
+            </div>
+            <div class="bg-primary bg-opacity-10 p-3 rounded-circle text-primary" style="font-size: 20px;">
+                🎓
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-dark p-4 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-muted d-block mb-1" style="font-size: 11px; letter-spacing: 0.5px; font-weight: 600;">OFERTA DE CURSOS</span>
+                <h2 class="fw-bold text-success mb-0">Cupos Abiertos</h2>
+            </div>
+            <div class="bg-success bg-opacity-10 p-3 rounded-circle text-success" style="font-size: 20px;">
+                📚
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card-dark p-4 d-flex justify-content-between align-items-center">
+            <div>
+                <span class="text-muted d-block mb-1" style="font-size: 11px; letter-spacing: 0.5px; font-weight: 600;">INSCRIPCIONES VINCULADAS</span>
+                <h2 class="fw-bold text-warning mb-0">Sistema en Línea</h2>
+            </div>
+            <div class="bg-warning bg-opacity-10 p-3 rounded-circle text-warning" style="font-size: 20px;">
+                📝
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
