@@ -13,7 +13,6 @@ class DatabaseConnection:
     def _crear_tablas(self):
         with self._conectar() as conn:
             cursor = conn.cursor()
-            # Tabla de Usuarios (Autenticación)
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS usuarios (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +21,6 @@ class DatabaseConnection:
                     password TEXT
                 )
             """)
-            # Tabla Estudiantes
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS estudiantes (
                     id TEXT PRIMARY KEY,
@@ -30,7 +28,6 @@ class DatabaseConnection:
                     correo TEXT
                 )
             """)
-            # Tabla Cursos
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS cursos (
                     id TEXT PRIMARY KEY,
@@ -38,7 +35,6 @@ class DatabaseConnection:
                     cupos INTEGER
                 )
             """)
-            # Tabla Inscripciones
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS inscripciones (
                     id TEXT PRIMARY KEY,
@@ -54,7 +50,7 @@ class SQLiteRepository:
     def __init__(self, db_conn: DatabaseConnection):
         self.db_conn = db_conn
 
-    # --- USUARIOS / AUTENTICACIÓN ---
+
     def registrar_usuario(self, nombre: str, correo: str, password_plana: str):
         # Encriptar contraseña por seguridad básica
         password_hash = hashlib.sha256(password_plana.encode()).hexdigest()
@@ -65,7 +61,7 @@ class SQLiteRepository:
                 conn.commit()
                 return True
             except sqlite3.IntegrityError:
-                return False # El correo ya está registrado
+                return False
 
     def validar_usuario(self, correo: str, password_plana: str):
         password_hash = hashlib.sha256(password_plana.encode()).hexdigest()
@@ -74,7 +70,7 @@ class SQLiteRepository:
             cursor.execute("SELECT id, nombre FROM usuarios WHERE correo = ? AND password = ?", (correo, password_hash))
             return cursor.fetchone()
 
-    # --- ESTUDIANTES ---
+
     def obtener_estudiante(self, id_estudiante: str):
         with self.db_conn._conectar() as conn:
             cursor = conn.cursor()
@@ -84,10 +80,35 @@ class SQLiteRepository:
             return None
         return Estudiante(*fila)
 
+    def buscar_estudiantes(self, termino: str):
+        termino_escapado = termino.replace("!", "!!").replace("%", "!%").replace("_", "!_")
+        patron = f"%{termino_escapado}%"
+        with self.db_conn._conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute(
+                """
+                SELECT id, nombre, correo
+                FROM estudiantes
+                WHERE ? = ''
+                   OR id LIKE ? ESCAPE '!'
+                   OR nombre LIKE ? ESCAPE '!'
+                   OR correo LIKE ? ESCAPE '!'
+                ORDER BY nombre COLLATE NOCASE, id
+                """,
+                (termino, patron, patron, patron),
+            )
+            return cursor.fetchall()
+
     def guardar_estudiante(self, estudiante: Estudiante):
         with self.db_conn._conectar() as conn:
             conn.execute("INSERT OR REPLACE INTO estudiantes (id, nombre, correo) VALUES (?, ?, ?)",
                          (estudiante.id_estudiante, estudiante.nombre, estudiante.correo))
+            conn.commit()
+
+    def actualizar_estudiante(self, id_estudiante: str, nombre: str, correo: str):
+        with self.db_conn._conectar() as conn:
+            conn.execute("UPDATE estudiantes SET nombre = ?, correo = ? WHERE id = ?",
+                         (nombre, correo, id_estudiante))
             conn.commit()
 
     def eliminar_estudiante(self, id_estudiante: str):
@@ -111,12 +132,18 @@ class SQLiteRepository:
                          (curso.id_curso, curso.nombre_curso, curso.cupos))
             conn.commit()
 
+    def actualizar_curso(self, id_curso: str, nombre: str, cupos: int):
+        with self.db_conn._conectar() as conn:
+            conn.execute("UPDATE cursos SET nombre = ?, cupos = ? WHERE id = ?",
+                         (nombre, cupos, id_curso))
+            conn.commit()
+
     def eliminar_curso(self, id_curso: str):
         with self.db_conn._conectar() as conn:
             conn.execute("DELETE FROM cursos WHERE id = ?", (id_curso,))
             conn.commit()
 
-    # --- INSCRIPCIONES ---
+
     def obtener_inscripciones_por_estudiante(self, id_estudiante: str):
         with self.db_conn._conectar() as conn:
             cursor = conn.cursor()
@@ -131,6 +158,19 @@ class SQLiteRepository:
         with self.db_conn._conectar() as conn:
             conn.execute("INSERT OR IGNORE INTO inscripciones (id, id_estudiante, id_curso) VALUES (?, ?, ?)",
                          (inscripcion.id_inscripcion, inscripcion.id_estudiante, inscripcion.id_curso))
+            conn.commit()
+
+    def obtener_inscripcion(self, id_inscripcion: str):
+        with self.db_conn._conectar() as conn:
+            cursor = conn.cursor()
+            cursor.execute("SELECT id, id_estudiante, id_curso FROM inscripciones WHERE id = ?",
+                           (id_inscripcion,))
+            return cursor.fetchone()
+
+    def actualizar_inscripcion(self, id_inscripcion: str, id_estudiante: str, id_curso: str):
+        with self.db_conn._conectar() as conn:
+            conn.execute("UPDATE inscripciones SET id_estudiante = ?, id_curso = ? WHERE id = ?",
+                         (id_estudiante, id_curso, id_inscripcion))
             conn.commit()
 
     def eliminar_inscripcion(self, id_inscripcion: str):

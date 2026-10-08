@@ -59,6 +59,7 @@
                             <td class="fw-semibold text-white">{{ ins[1] }}</td>
                             <td><span class="badge bg-success bg-opacity-25 text-success px-2 py-1">{{ ins[2] }}</span></td>
                             <td class="text-end">
+                                <a href="{{ url_for('editar_inscripcion', id=ins[0]) }}" class="btn btn-outline-primary btn-sm px-2 py-1" style="font-size: 11px;">Editar</a>
                                 <a href="/eliminar_inscripcion/{{ ins[0] }}" class="btn btn-outline-danger btn-sm px-2 py-1" style="font-size: 11px;">Eliminar</a>
                             </td>
                         </tr>

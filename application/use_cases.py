@@ -1,5 +1,13 @@
 from domain.entities import Estudiante, Curso, Inscripcion
 
+class BuscarEstudiantesUseCase:
+    def __init__(self, repositorio):
+        self.repositorio = repositorio
+
+    def ejecutar(self, termino: str):
+        return self.repositorio.buscar_estudiantes(termino.strip())
+
+
 class RegistrarEstudianteUseCase:
     def __init__(self, repositorio):
         self.repositorio = repositorio
@@ -29,7 +37,6 @@ class InscribirEstudianteUseCase:
         self.repositorio = repositorio
 
     def ejecutar(self, id_inscripcion: str, id_estudiante: str, id_curso: str):
-        # Validar que existan el estudiante y el curso
         estudiante = self.repositorio.obtener_estudiante(id_estudiante)
         if not estudiante:
             raise ValueError("El estudiante no se encuentra registrado.")

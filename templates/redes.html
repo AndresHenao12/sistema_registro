@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mb-4">
+    <h2 class="fw-bold text-white">Redes sociales</h2>
+    <p class="text-muted mb-0">Encuentra nuestros canales en cada plataforma.</p>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <a class="card-dark p-4 d-flex align-items-center gap-3 h-100 text-decoration-none" href="https://github.com/" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-github fs-1 text-white" aria-hidden="true"></i>
+            <div>
+                <h3 class="h5 fw-bold text-white mb-1">GitHub</h3>
+                <span class="text-muted">Explora proyectos</span>
+            </div>
+            <i class="bi bi-box-arrow-up-right ms-auto text-muted" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="card-dark p-4 d-flex align-items-center gap-3 h-100 text-decoration-none" href="https://discord.com/" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-discord fs-1 text-primary" aria-hidden="true"></i>
+            <div>
+                <h3 class="h5 fw-bold text-white mb-1">Discord</h3>
+                <span class="text-muted">Únete a la comunidad</span>
+            </div>
+            <i class="bi bi-box-arrow-up-right ms-auto text-muted" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div class="col-md-4">
+        <a class="card-dark p-4 d-flex align-items-center gap-3 h-100 text-decoration-none" href="https://www.whatsapp.com/" target="_blank" rel="noopener noreferrer">
+            <i class="bi bi-whatsapp fs-1 text-success" aria-hidden="true"></i>
+            <div>
+                <h3 class="h5 fw-bold text-white mb-1">WhatsApp</h3>
+                <span class="text-muted">Contáctanos</span>
+            </div>
+            <i class="bi bi-box-arrow-up-right ms-auto text-muted" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -51,6 +51,7 @@
                             <td class="fw-semibold text-white">{{ cur[1] }}</td>
                             <td><span class="badge bg-primary bg-opacity-25 text-primary px-2 py-1">{{ cur[2] }} cupos</span></td>
                             <td class="text-end">
+                                <a href="{{ url_for('editar_curso', id=cur[0]) }}" class="btn btn-outline-primary btn-sm px-2 py-1" style="font-size: 11px;">Editar</a>
                                 <a href="/eliminar_curso/{{ cur[0] }}" class="btn btn-outline-danger btn-sm px-2 py-1" style="font-size: 11px;">Eliminar</a>
                             </td>
                         </tr>

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card-dark p-4 p-md-5">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold text-white mb-1">Editar {{ {'estudiante': 'estudiante', 'curso': 'curso', 'inscripcion': 'inscripción'}[tipo] }}</h2>
+                    <p class="text-muted mb-0">Actualiza la información del registro.</p>
+                </div>
+                <a href="{{ url_for(tipo + 's') if tipo != 'inscripcion' else url_for('inscripciones') }}" class="btn btn-outline-light btn-sm" aria-label="Volver">Volver</a>
+            </div>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }} text-center small py-2" role="alert">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            {% if tipo == 'estudiante' %}
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Documento / ID</label>
+                    <input class="form-control" value="{{ registro.id_estudiante }}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nombre completo</label>
+                    <input type="text" name="nombre" class="form-control" value="{{ registro.nombre }}" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Correo electrónico</label>
+                    <input type="email" name="correo" class="form-control" value="{{ registro.correo }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
+            </form>
+            {% elif tipo == 'curso' %}
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">ID del curso</label>
+                    <input class="form-control" value="{{ registro.id_curso }}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nombre del curso</label>
+                    <input type="text" name="nombre_curso" class="form-control" value="{{ registro.nombre_curso }}" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Cupos máximos</label>
+                    <input type="number" name="cupos" class="form-control" min="0" value="{{ registro.cupos }}" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
+            </form>
+            {% else %}
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">ID de inscripción</label>
+                    <input class="form-control" value="{{ registro[0] }}" disabled>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Estudiante</label>
+                    <select name="id_estudiante" class="form-select" required>
+                        {% for estudiante in estudiantes %}
+                        <option value="{{ estudiante[0] }}" {% if estudiante[0] == registro[1] %}selected{% endif %}>{{ estudiante[1] }} (ID: {{ estudiante[0] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">Curso</label>
+                    <select name="id_curso" class="form-select" required>
+                        {% for curso in cursos %}
+                        <option value="{{ curso[0] }}" {% if curso[0] == registro[2] %}selected{% endif %}>{{ curso[1] }} (ID: {{ curso[0] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
